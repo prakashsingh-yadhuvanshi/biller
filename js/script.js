@@ -113,13 +113,19 @@ function calculateTotals() {
     
     const discountPercent = parseFloat(document.getElementById('discountPercent').value) || 0;
     const discountAmount = subtotal * (discountPercent / 100);
-    const afterDiscount = subtotal - discountAmount;
-    const gstAmount = afterDiscount * 0.18; // 18% GST
-    const grandTotal = afterDiscount + gstAmount;
+    const grandTotal = subtotal - discountAmount;
     
     document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
     document.getElementById('discountAmount').textContent = `₹${discountAmount.toFixed(2)}`;
-    document.getElementById('gstAmount').textContent = `₹${gstAmount.toFixed(2)}`;
+    
+    // Show/hide discount row based on value
+    const discountRow = document.getElementById('discountRow');
+    if (discountPercent > 0) {
+        discountRow.style.display = 'flex';
+    } else {
+        discountRow.style.display = 'none';
+    }
+    
     document.getElementById('grandTotal').textContent = `₹${grandTotal.toFixed(2)}`;
 }
 

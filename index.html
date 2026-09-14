@@ -105,14 +105,10 @@
                     <label>Subtotal:</label>
                     <span id="subtotal">₹0.00</span>
                 </div>
-                <div class="totals-row">
+                <div class="totals-row discount-row" id="discountRow" style="display: none;">
                     <label>Discount (%):</label>
-                    <input type="number" id="discountPercent" value="0" min="0" max="100" onchange="calculateTotals()" style="width: 80px;">
+                    <input type="number" id="discountPercent" value="0" min="0" max="100" onchange="calculateTotals()" onkeyup="calculateTotals()" style="width: 80px;">
                     <span id="discountAmount">₹0.00</span>
-                </div>
-                <div class="totals-row">
-                    <label>GST (18%):</label>
-                    <span id="gstAmount">₹0.00</span>
                 </div>
                 <div class="totals-row total">
                     <label>TOTAL:</label>
