@@ -275,6 +275,10 @@ body {
     font-size: 16px;
 }
 
+.totals-row.discount-row {
+    display: none;
+}
+
 /* Payment Section */
 .payment-section {
     margin-bottom: 15px;
