@@ -74,6 +74,7 @@ function addItemRow() {
         <td><input type="text" placeholder="Batch/Expiry"></td>
         <td><input type="number" class="rate" value="0" min="0" onchange="calculateRow(this)" onkeyup="calculateRow(this)"></td>
         <td><input type="number" class="qty" value="1" min="1" onchange="calculateRow(this)" onkeyup="calculateRow(this)"></td>
+        <td><input type="number" class="consultation" value="0" min="0" onchange="calculateRow(this)" onkeyup="calculateRow(this)"></td>
         <td><span class="cost">₹0.00</span></td>
         <td><button type="button" class="remove-btn" onclick="removeRow(this)">×</button></td>
     `;
@@ -103,7 +104,8 @@ function calculateRow(input) {
     const row = input.closest('tr');
     const rate = parseFloat(row.querySelector('.rate').value) || 0;
     const qty = parseFloat(row.querySelector('.qty').value) || 0;
-    const cost = rate * qty;
+    const consultation = parseFloat(row.querySelector('.consultation').value) || 0;
+    const cost = (rate * qty) + consultation;
     
     row.querySelector('.cost').textContent = `₹${cost.toFixed(2)}`;
     row.querySelector('.cost').dataset.value = cost;
