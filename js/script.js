@@ -31,6 +31,15 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('clinicSelect').value = savedClinic;
         switchClinic();
     }
+    
+    // Initialize discount toggle state
+    const discountToggle = document.getElementById('discountToggle');
+    const discountPercentInput = document.getElementById('discountPercent');
+    const discountRow = document.getElementById('discountRow');
+    if (discountToggle && discountPercentInput) {
+        discountPercentInput.disabled = true;
+        discountRow.classList.remove('show-in-print');
+    }
 });
 
 // Switch clinic
@@ -106,27 +115,53 @@ function calculateRow(input) {
 function calculateTotals() {
     const costs = document.querySelectorAll('.cost');
     let subtotal = 0;
-    
+
     costs.forEach(cost => {
         subtotal += parseFloat(cost.dataset.value) || 0;
     });
+
+    const discountToggle = document.getElementById('discountToggle');
+    const discountPercentInput = document.getElementById('discountPercent');
     
-    const discountPercent = parseFloat(document.getElementById('discountPercent').value) || 0;
-    const discountAmount = subtotal * (discountPercent / 100);
+    // Only calculate discount if toggle is checked
+    let discountPercent = 0;
+    let discountAmount = 0;
+    
+    if (discountToggle && discountToggle.checked) {
+        discountPercent = parseFloat(discountPercentInput.value) || 0;
+        discountAmount = subtotal * (discountPercent / 100);
+    }
+
     const grandTotal = subtotal - discountAmount;
-    
+
     document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
-    document.getElementById('discountAmount').textContent = `₹${discountAmount.toFixed(2)}`;
     
-    // Show/hide discount row based on value
-    const discountRow = document.getElementById('discountRow');
-    if (discountPercent > 0) {
-        discountRow.style.display = 'flex';
+    if (discountToggle && discountToggle.checked) {
+        document.getElementById('discountAmount').textContent = `- ₹${discountAmount.toFixed(2)}`;
     } else {
-        discountRow.style.display = 'none';
+        document.getElementById('discountAmount').textContent = '';
+    }
+
+    document.getElementById('grandTotal').textContent = `₹${grandTotal.toFixed(2)}`;
+}
+
+// Toggle discount visibility
+function toggleDiscountVisibility() {
+    const discountToggle = document.getElementById('discountToggle');
+    const discountPercentInput = document.getElementById('discountPercent');
+    const discountRow = document.getElementById('discountRow');
+    
+    if (discountToggle.checked) {
+        discountPercentInput.disabled = false;
+        discountPercentInput.focus();
+        discountRow.classList.add('show-in-print');
+    } else {
+        discountPercentInput.disabled = true;
+        discountPercentInput.value = 0;
+        discountRow.classList.remove('show-in-print');
     }
     
-    document.getElementById('grandTotal').textContent = `₹${grandTotal.toFixed(2)}`;
+    calculateTotals();
 }
 
 // Reset form
@@ -150,7 +185,15 @@ function resetForm() {
         });
         
         // Reset discount
-        document.getElementById('discountPercent').value = 0;
+        const discountToggle = document.getElementById('discountToggle');
+        const discountPercentInput = document.getElementById('discountPercent');
+        const discountRow = document.getElementById('discountRow');
+        if (discountToggle) discountToggle.checked = false;
+        if (discountPercentInput) {
+            discountPercentInput.value = 0;
+            discountPercentInput.disabled = true;
+        }
+        if (discountRow) discountRow.classList.remove('show-in-print');
         
         // Clear table and add one row
         const tbody = document.getElementById('itemsBody');

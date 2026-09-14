@@ -105,10 +105,12 @@
                     <label>Subtotal:</label>
                     <span id="subtotal">₹0.00</span>
                 </div>
-                <div class="totals-row discount-row" id="discountRow" style="display: none;">
-                    <label>Discount (%):</label>
-                    <input type="number" id="discountPercent" value="0" min="0" max="100" onchange="calculateTotals()" onkeyup="calculateTotals()" style="width: 80px;">
-                    <span id="discountAmount">₹0.00</span>
+                <div class="totals-row discount-row" id="discountRow">
+                    <label>
+                        <input type="checkbox" id="discountToggle" onchange="toggleDiscountVisibility()"> Show Discount
+                    </label>
+                    <input type="number" id="discountPercent" value="0" min="0" max="100" onchange="calculateTotals()" onkeyup="calculateTotals()" style="width: 80px;" placeholder="%">
+                    <span id="discountAmount"></span>
                 </div>
                 <div class="totals-row total">
                     <label>TOTAL:</label>

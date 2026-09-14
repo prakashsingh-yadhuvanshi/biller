@@ -276,7 +276,19 @@ body {
 }
 
 .totals-row.discount-row {
-    display: none;
+    display: flex;
+    align-items: center;
+}
+
+.totals-row.discount-row input[type="checkbox"] {
+    margin-right: 5px;
+    width: auto;
+}
+
+.totals-row.discount-row label:first-child {
+    font-weight: normal;
+    display: flex;
+    align-items: center;
 }
 
 /* Payment Section */
@@ -415,6 +427,25 @@ body {
         display: inline-block;
         border: none !important;
         background: transparent !important;
+    }
+    
+    /* Hide discount toggle checkbox in print */
+    .totals-row.discount-row input[type="checkbox"] {
+        display: none !important;
+    }
+    
+    /* Hide "Show Discount" label in print */
+    .totals-row.discount-row label:first-child {
+        display: none !important;
+    }
+    
+    /* Only show discount row in print if it has show-in-print class */
+    .totals-row.discount-row {
+        display: none !important;
+    }
+    
+    .totals-row.discount-row.show-in-print {
+        display: flex !important;
     }
     
     .patient-details {
