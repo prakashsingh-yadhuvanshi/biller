@@ -175,8 +175,9 @@ body {
 #itemsTable th,
 #itemsTable td {
     border: 1px solid #ccc;
-    padding: 8px 5px;
+    padding: 6px 4px;
     text-align: left;
+    font-size: 11px;
 }
 
 #itemsTable th {
