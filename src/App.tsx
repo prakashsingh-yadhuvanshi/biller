@@ -28,8 +28,8 @@ interface BillData {
   notes: string;
 }
 
-const MIND_GRACE_LOGO = 'https://image.qwenlm.ai/generated-images/0952a916-ca96-4c4f-be82-8bf62d30ca2a/_result.png';
-const AASHA_LOGO = 'https://image.qwenlm.ai/generated-images/f8b468b5-b449-409e-8486-88852a0b5e1a/_result.png';
+const MIND_GRACE_LOGO = 'img/MIND GRACE LOGO.jpg';
+const AASHA_LOGO = 'img/AASHA Logo.jpeg';
 
 const CLINIC_INFO = {
   mindgrace: {
