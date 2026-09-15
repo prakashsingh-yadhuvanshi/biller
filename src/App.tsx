@@ -8,6 +8,7 @@ interface LineItem {
   description: string;
   quantity: number;
   rate: number;
+  category: 'consultation' | 'medicine' | 'therapy' | 'assessment' | 'other';
 }
 
 interface BillData {
@@ -70,7 +71,7 @@ export default function App() {
     address: '',
     doctorName: '',
     referralBy: '',
-    lineItems: [{ id: generateId(), description: '', quantity: 1, rate: 0 }],
+    lineItems: [{ id: generateId(), description: '', quantity: 1, rate: 0, category: 'consultation' }],
     discount: 0,
     discountType: 'percent',
     paymentMethod: 'cash',
@@ -87,7 +88,7 @@ export default function App() {
   const addLineItem = () => {
     setBillData(prev => ({
       ...prev,
-      lineItems: [...prev.lineItems, { id: generateId(), description: '', quantity: 1, rate: 0 }],
+      lineItems: [...prev.lineItems, { id: generateId(), description: '', quantity: 1, rate: 0, category: 'consultation' }],
     }));
   };
 
@@ -108,9 +109,17 @@ export default function App() {
   };
 
   const subtotal = billData.lineItems.reduce((sum, item) => sum + item.quantity * item.rate, 0);
+  
+  // Calculate medicine subtotal for discount (discount only applies to medicines)
+  const medicineSubtotal = billData.lineItems
+    .filter(item => item.category === 'medicine')
+    .reduce((sum, item) => sum + item.quantity * item.rate, 0);
+  
+  // Discount only applies to medicines
   const discountAmount = billData.discountType === 'percent'
-    ? (subtotal * billData.discount) / 100
-    : billData.discount;
+    ? (medicineSubtotal * billData.discount) / 100
+    : Math.min(billData.discount, medicineSubtotal); // Fixed discount capped at medicine total
+  
   const taxableAmount = subtotal - discountAmount;
   const gst = taxableAmount * 0.18;
   const totalAmount = taxableAmount + gst;
@@ -186,6 +195,7 @@ export default function App() {
               <thead>
                 <tr className={`bg-gradient-to-r ${clinicInfo.color} text-white`}>
                   <th className="text-left py-2 px-3 rounded-tl-lg">#</th>
+                  <th className="text-left py-2 px-3">Category</th>
                   <th className="text-left py-2 px-3">Description</th>
                   <th className="text-center py-2 px-3">Qty</th>
                   <th className="text-right py-2 px-3">Rate (₹)</th>
@@ -194,8 +204,19 @@ export default function App() {
               </thead>
               <tbody>
                 {billData.lineItems.map((item, index) => (
-                  <tr key={item.id} className="border-b border-gray-100">
+                  <tr key={item.id} className={`border-b border-gray-100 ${item.category === 'medicine' ? 'bg-orange-50/50' : ''}`}>
                     <td className="py-2 px-3">{index + 1}</td>
+                    <td className="py-2 px-3">
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                        item.category === 'medicine' ? 'bg-orange-100 text-orange-700' :
+                        item.category === 'consultation' ? 'bg-blue-100 text-blue-700' :
+                        item.category === 'therapy' ? 'bg-purple-100 text-purple-700' :
+                        item.category === 'assessment' ? 'bg-green-100 text-green-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
+                        {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+                      </span>
+                    </td>
                     <td className="py-2 px-3">{item.description || '—'}</td>
                     <td className="py-2 px-3 text-center">{item.quantity}</td>
                     <td className="py-2 px-3 text-right">{item.rate.toFixed(2)}</td>
@@ -207,14 +228,20 @@ export default function App() {
 
             {/* Totals */}
             <div className="flex justify-end mb-6">
-              <div className="w-72">
+              <div className="w-80">
                 <div className="flex justify-between py-1 text-sm">
                   <span className="text-gray-600">Subtotal:</span>
                   <span>₹ {subtotal.toFixed(2)}</span>
                 </div>
+                {medicineSubtotal > 0 && (
+                  <div className="flex justify-between py-0.5 text-xs text-gray-500">
+                    <span className="italic">↳ Of which medicines:</span>
+                    <span>₹ {medicineSubtotal.toFixed(2)}</span>
+                  </div>
+                )}
                 {discountAmount > 0 && (
                   <div className="flex justify-between py-1 text-sm">
-                    <span className="text-gray-600">Discount {billData.discountType === 'percent' ? `(${billData.discount}%)` : ''}:</span>
+                    <span className="text-gray-600">Discount {billData.discountType === 'percent' ? `(${billData.discount}% on medicines)` : '(on medicines)'}:</span>
                     <span className="text-red-500">- ₹ {discountAmount.toFixed(2)}</span>
                   </div>
                 )}
@@ -477,16 +504,42 @@ export default function App() {
           </div>
 
           <div className="space-y-3">
+            {/* Info banner about discount */}
+            <div className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-700">
+              <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              <span><strong>Discount applies only to Medicines.</strong> Consultation, therapy & assessment charges are not discounted.</span>
+            </div>
+            
             {billData.lineItems.map((item, index) => (
-              <div key={item.id} className="grid grid-cols-12 gap-3 items-end p-3 bg-gray-50 rounded-xl">
-                <div className="col-span-12 md:col-span-5">
+              <div key={item.id} className={`grid grid-cols-12 gap-3 items-end p-3 rounded-xl border ${item.category === 'medicine' ? 'bg-orange-50/50 border-orange-200' : 'bg-gray-50 border-gray-100'}`}>
+                <div className="col-span-12 md:col-span-3">
+                  <label className="block text-xs text-gray-500 mb-1">Category</label>
+                  <select
+                    value={item.category}
+                    onChange={(e) => updateLineItem(item.id, 'category', e.target.value)}
+                    className={`w-full px-3 py-2 rounded-lg border text-sm font-medium transition outline-none ${
+                      item.category === 'medicine' 
+                        ? 'border-orange-300 bg-orange-100 text-orange-700' 
+                        : 'border-gray-200 bg-white text-gray-700'
+                    } focus:border-blue-400 focus:ring-2 focus:ring-blue-100`}
+                  >
+                    <option value="consultation">💊 Consultation</option>
+                    <option value="medicine">💊 Medicine</option>
+                    <option value="therapy">🧠 Therapy</option>
+                    <option value="assessment">📋 Assessment</option>
+                    <option value="other">📦 Other</option>
+                  </select>
+                </div>
+                <div className="col-span-12 md:col-span-3">
                   <label className="block text-xs text-gray-500 mb-1">Description</label>
                   <input
                     type="text"
                     value={item.description}
                     onChange={(e) => updateLineItem(item.id, 'description', e.target.value)}
                     className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition outline-none text-sm"
-                    placeholder="Consultation / Therapy / Assessment..."
+                    placeholder={item.category === 'medicine' ? 'Medicine name...' : 'Service description...'}
                   />
                 </div>
                 <div className="col-span-4 md:col-span-2">
@@ -511,7 +564,7 @@ export default function App() {
                     placeholder="0.00"
                   />
                 </div>
-                <div className="col-span-3 md:col-span-2">
+                <div className="col-span-3 md:col-span-1">
                   <label className="block text-xs text-gray-500 mb-1">Amount</label>
                   <div className="px-3 py-2 bg-white rounded-lg border border-gray-200 text-sm font-medium text-gray-700">
                     ₹ {(item.quantity * item.rate).toFixed(2)}
@@ -538,14 +591,14 @@ export default function App() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Discount</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Discount <span className="text-xs text-orange-500 font-normal">(medicines only)</span></label>
                   <input
                     type="number"
                     min="0"
                     value={billData.discount || ''}
                     onChange={(e) => updateField('discount', parseFloat(e.target.value) || 0)}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition outline-none"
-                    placeholder="0"
+                    placeholder="10"
                   />
                 </div>
                 <div>
@@ -593,12 +646,18 @@ export default function App() {
               {/* Summary */}
               <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-4 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Subtotal:</span>
+                  <span className="text-gray-600">Subtotal (All Items):</span>
                   <span className="font-medium">₹ {subtotal.toFixed(2)}</span>
                 </div>
+                {medicineSubtotal > 0 && (
+                  <div className="flex justify-between text-xs text-gray-500">
+                    <span className="italic">↳ Medicines only:</span>
+                    <span>₹ {medicineSubtotal.toFixed(2)}</span>
+                  </div>
+                )}
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Discount:</span>
+                    <span className="text-gray-600">Discount <span className="text-xs text-orange-500">(on medicines only)</span>:</span>
                     <span className="font-medium text-red-500">- ₹ {discountAmount.toFixed(2)}</span>
                   </div>
                 )}
