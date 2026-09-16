@@ -458,29 +458,47 @@ body {
     }
     
     body {
-        background: white;
-        padding: 0;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        background: white !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+        min-height: auto !important;
     }
 
     /* Hide screen-only elements */
     .screen-only {
         display: none !important;
+        visibility: hidden !important;
     }
 
     .container {
-        box-shadow: none;
-        padding: 0;
-        max-width: 100%;
-        min-height: auto;
-        width: 100%;
-        background: white;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+        min-height: auto !important;
+        width: 100% !important;
+        background: white !important;
+        margin: 0 !important;
     }
 
     .bill-container {
-        border: none;
-        padding: 0;
+        border: none !important;
+        padding: 0 !important;
+        display: block !important;
+        visibility: visible !important;
+    }
+
+    /* Ensure all bill sections are visible */
+    .header,
+    .receipt-details,
+    .patient-details,
+    .items-section,
+    .totals-section,
+    .payment-section,
+    .signature-section {
+        display: block !important;
+        visibility: visible !important;
     }
 
     /* Style inputs for print */
@@ -490,8 +508,9 @@ body {
         border: none !important;
         background: transparent !important;
         padding: 0 !important;
-        appearance: none;
-        -webkit-appearance: none;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        display: inline !important;
     }
 
     .print-select {
@@ -503,9 +522,11 @@ body {
         accent-color: #000000;
     }
 
-    #itemsTable td input {
-        border: none;
-        background: transparent;
+    #itemsTable td input,
+    #itemsTable td select {
+        border: none !important;
+        background: transparent !important;
+        display: inline !important;
     }
 
     /* Show discount row when active in print */
@@ -521,5 +542,30 @@ body {
     .totals-row.discount-row input[type="checkbox"],
     .totals-row.discount-row label:first-child {
         display: none !important;
+    }
+
+    /* Ensure table displays properly */
+    #itemsTable {
+        display: table !important;
+        width: 100% !important;
+    }
+
+    #itemsTable thead,
+    #itemsTable tbody {
+        display: table-header-group !important;
+        display: table-row-group !important;
+    }
+
+    /* Force all text to be visible */
+    h1, h2, h3, p, label, span {
+        color: #000000 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Ensure logo is visible */
+    .logo {
+        display: block !important;
+        visibility: visible !important;
     }
 }
