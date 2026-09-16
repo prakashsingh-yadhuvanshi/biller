@@ -187,7 +187,8 @@ body {
     font-size: 12px;
 }
 
-#itemsTable td input {
+#itemsTable td input,
+#itemsTable td select {
     width: 100%;
     border: none;
     padding: 4px;
@@ -195,7 +196,8 @@ body {
     background: transparent;
 }
 
-#itemsTable td input:focus {
+#itemsTable td input:focus,
+#itemsTable td select:focus {
     outline: 2px solid #64b5f6;
     background: #fff;
 }
