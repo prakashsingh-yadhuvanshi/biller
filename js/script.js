@@ -14,7 +14,6 @@ const clinics = {
     }
 };
 
-let rowCount = 0;
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -63,13 +62,14 @@ function switchClinic() {
 
 // Add item row
 function addItemRow() {
-    rowCount++;
     const tbody = document.getElementById('itemsBody');
+    const rows = tbody.querySelectorAll('tr');
+    const newRowNum = rows.length + 1;
     const row = document.createElement('tr');
-    row.id = `row${rowCount}`;
+    row.id = `row${Date.now()}`; // Use timestamp for unique ID instead of rowCount
     
     row.innerHTML = `
-        <td>${rowCount}</td>
+        <td>${newRowNum}</td>
         <td><input type="text" placeholder="Medicine/Service name"></td>
         <td><input type="text" placeholder="Batch/Expiry"></td>
         <td>
@@ -215,7 +215,6 @@ function resetForm() {
         // Clear table and add one row
         const tbody = document.getElementById('itemsBody');
         tbody.innerHTML = '';
-        rowCount = 0;
         addItemRow();
         
         // Reset totals
