@@ -464,12 +464,24 @@ body {
         print-color-adjust: exact !important;
         color-adjust: exact !important;
         min-height: auto !important;
+        display: block !important;
+        visibility: visible !important;
     }
 
     /* Hide screen-only elements */
     .screen-only {
         display: none !important;
         visibility: hidden !important;
+        position: absolute !important;
+        left: -9999px !important;
+    }
+
+    /* Ensure bill container and all its children are visible */
+    #billContainer,
+    #billContainer * {
+        display: block !important;
+        visibility: visible !important;
+        position: static !important;
     }
 
     .container {
@@ -480,6 +492,7 @@ body {
         width: 100% !important;
         background: white !important;
         margin: 0 !important;
+        display: block !important;
     }
 
     .bill-container {
@@ -501,7 +514,30 @@ body {
         visibility: visible !important;
     }
 
+    /* Ensure header flex layout works in print */
+    .header {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .logo {
+        display: block !important;
+        visibility: visible !important;
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .clinic-info {
+        display: block !important;
+        visibility: visible !important;
+    }
+
     /* Style inputs for print */
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    input[type="tel"],
+    select,
     .print-input,
     .print-select,
     .discount-input {
@@ -511,9 +547,10 @@ body {
         appearance: none !important;
         -webkit-appearance: none !important;
         display: inline !important;
+        color: #000000 !important;
     }
 
-    .print-select {
+    select {
         border: none !important;
         background: transparent !important;
     }
@@ -536,6 +573,7 @@ body {
     
     .totals-row.discount-row.show-in-print {
         display: flex !important;
+        align-items: center !important;
     }
     
     /* Hide checkbox and "Show Discount" label in print */
@@ -548,12 +586,25 @@ body {
     #itemsTable {
         display: table !important;
         width: 100% !important;
+        border-collapse: collapse !important;
     }
 
-    #itemsTable thead,
-    #itemsTable tbody {
+    #itemsTable thead {
         display: table-header-group !important;
+    }
+    
+    #itemsTable tbody {
         display: table-row-group !important;
+    }
+    
+    #itemsTable tr {
+        display: table-row !important;
+    }
+    
+    #itemsTable th,
+    #itemsTable td {
+        display: table-cell !important;
+        padding: 8px 6px !important;
     }
 
     /* Force all text to be visible */
@@ -563,9 +614,36 @@ body {
         print-color-adjust: exact !important;
     }
 
-    /* Ensure logo is visible */
-    .logo {
+    /* Ensure rows and flex containers work */
+    .row {
+        display: flex !important;
+        justify-content: space-between !important;
+    }
+    
+    .col {
         display: block !important;
-        visibility: visible !important;
+        flex: 1 !important;
+    }
+    
+    .form-row {
+        display: flex !important;
+        gap: 10px !important;
+    }
+    
+    .payment-options {
+        display: flex !important;
+        gap: 20px !important;
+        flex-wrap: wrap !important;
+    }
+    
+    .signature-section {
+        display: flex !important;
+        justify-content: flex-end !important;
+    }
+    
+    .totals-row {
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
     }
 }
