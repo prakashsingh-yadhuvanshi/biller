@@ -81,7 +81,7 @@ function addItemRow() {
         <td><input type="number" class="rate" value="0" min="0" onchange="calculateRow(this)" onkeyup="calculateRow(this)"></td>
         <td><input type="number" class="qty" value="1" min="1" onchange="calculateRow(this)" onkeyup="calculateRow(this)"></td>
         <td><span class="cost">₹0.00</span></td>
-        <td><button type="button" class="remove-btn" onclick="removeRow(this)">×</button></td>
+        <td class="screen-only"><button type="button" class="remove-btn" onclick="removeRow(this)">×</button></td>
     `;
     
     tbody.appendChild(row);
