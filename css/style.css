@@ -11,10 +11,9 @@ body {
     color: #000000;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    min-height: 100vh;
 }
 
-/* Screen-only elements - hidden when printing */
+/* Screen-only elements - visible on screen, hidden when printing */
 .screen-only {
     display: block;
 }
@@ -24,10 +23,9 @@ body {
     margin: 0 auto;
     background: white;
     padding: 15mm;
-    min-height: 297mm;
 }
 
-/* Clinic Selector - Hidden in Print */
+/* Clinic Selector */
 .clinic-selector {
     margin-bottom: 20px;
     padding: 15px;
@@ -423,7 +421,7 @@ body {
     text-transform: uppercase;
 }
 
-/* Action Buttons - Hidden in Print */
+/* Action Buttons */
 .action-buttons {
     margin-top: 20px;
     display: flex;
@@ -456,83 +454,82 @@ body {
         size: A4;
         margin: 15mm;
     }
-    
+
     body {
         background: white !important;
         padding: 0 !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
         color-adjust: exact !important;
-        min-height: auto !important;
-        display: block !important;
-        visibility: visible !important;
     }
 
-    /* Hide screen-only elements */
     .screen-only {
         display: none !important;
-        visibility: hidden !important;
-        position: absolute !important;
-        left: -9999px !important;
-    }
-
-    /* Ensure bill container and all its children are visible */
-    #billContainer,
-    #billContainer * {
-        display: block !important;
-        visibility: visible !important;
-        position: static !important;
     }
 
     .container {
-        box-shadow: none !important;
-        padding: 0 !important;
         max-width: 100% !important;
-        min-height: auto !important;
         width: 100% !important;
         background: white !important;
         margin: 0 !important;
-        display: block !important;
+        padding: 0 !important;
+        box-shadow: none !important;
     }
 
     .bill-container {
         border: none !important;
         padding: 0 !important;
-        display: block !important;
-        visibility: visible !important;
     }
 
-    /* Ensure all bill sections are visible */
     .header,
-    .receipt-details,
-    .patient-details,
-    .items-section,
-    .totals-section,
-    .payment-section,
-    .signature-section {
-        display: block !important;
-        visibility: visible !important;
+    .row,
+    .form-row,
+    .payment-options,
+    .signature-section,
+    .totals-row {
+        display: flex !important;
     }
 
-    /* Ensure header flex layout works in print */
     .header {
-        display: flex !important;
         align-items: center !important;
+    }
+
+    .row {
+        justify-content: space-between !important;
+    }
+
+    .form-row {
+        gap: 10px !important;
+    }
+
+    .payment-options {
+        gap: 20px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .signature-section {
+        justify-content: flex-end !important;
+    }
+
+    .totals-row {
+        justify-content: flex-end !important;
+        align-items: center !important;
+    }
+
+    .col {
+        flex: 1 !important;
     }
 
     .logo {
         display: block !important;
-        visibility: visible !important;
         width: 100px !important;
         height: 100px !important;
     }
 
     .clinic-info {
         display: block !important;
-        visibility: visible !important;
     }
 
-    /* Style inputs for print */
     input[type="text"],
     input[type="date"],
     input[type="number"],
@@ -546,43 +543,9 @@ body {
         padding: 0 !important;
         appearance: none !important;
         -webkit-appearance: none !important;
-        display: inline !important;
         color: #000000 !important;
     }
 
-    select {
-        border: none !important;
-        background: transparent !important;
-    }
-
-    .print-radio:checked {
-        accent-color: #000000;
-    }
-
-    #itemsTable td input,
-    #itemsTable td select {
-        border: none !important;
-        background: transparent !important;
-        display: inline !important;
-    }
-
-    /* Show discount row when active in print */
-    .totals-row.discount-row {
-        display: none !important;
-    }
-    
-    .totals-row.discount-row.show-in-print {
-        display: flex !important;
-        align-items: center !important;
-    }
-    
-    /* Hide checkbox and "Show Discount" label in print */
-    .totals-row.discount-row input[type="checkbox"],
-    .totals-row.discount-row label:first-child {
-        display: none !important;
-    }
-
-    /* Ensure table displays properly */
     #itemsTable {
         display: table !important;
         width: 100% !important;
@@ -592,58 +555,45 @@ body {
     #itemsTable thead {
         display: table-header-group !important;
     }
-    
+
     #itemsTable tbody {
         display: table-row-group !important;
     }
-    
+
     #itemsTable tr {
         display: table-row !important;
     }
-    
+
     #itemsTable th,
     #itemsTable td {
         display: table-cell !important;
         padding: 8px 6px !important;
+        border: 1px solid #000000 !important;
     }
 
-    /* Force all text to be visible */
-    h1, h2, h3, p, label, span {
+    #itemsTable td input,
+    #itemsTable td select {
+        border: none !important;
+        background: transparent !important;
+    }
+
+    .totals-row.discount-row {
+        display: none !important;
+    }
+
+    .totals-row.discount-row.show-in-print {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .totals-row.discount-row input[type="checkbox"],
+    .totals-row.discount-row label:first-child {
+        display: none !important;
+    }
+
+    h1, h2, h3, p, label, span, div {
         color: #000000 !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
-    }
-
-    /* Ensure rows and flex containers work */
-    .row {
-        display: flex !important;
-        justify-content: space-between !important;
-    }
-    
-    .col {
-        display: block !important;
-        flex: 1 !important;
-    }
-    
-    .form-row {
-        display: flex !important;
-        gap: 10px !important;
-    }
-    
-    .payment-options {
-        display: flex !important;
-        gap: 20px !important;
-        flex-wrap: wrap !important;
-    }
-    
-    .signature-section {
-        display: flex !important;
-        justify-content: flex-end !important;
-    }
-    
-    .totals-row {
-        display: flex !important;
-        justify-content: flex-end !important;
-        align-items: center !important;
     }
 }
