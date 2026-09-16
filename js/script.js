@@ -9,7 +9,7 @@ const clinics = {
     aasha: {
         name: 'AASHA EARLY INTERVENTION CENTER',
         address: 'J123, Gamma II Greater Noida, Uttar Pradesh, 201310',
-        logo: 'img/AASHA Logo.jpeg',
+        logo: 'img/AASHA Logo.png',
         specialist: ''
     }
 };
