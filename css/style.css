@@ -96,8 +96,8 @@ body {
 /* Receipt Details */
 .receipt-details {
     margin-bottom: 20px;
-    border: 1px solid #000000;
-    padding: 15px;
+    border: none;
+    padding: 0;
 }
 
 .receipt-details .row {
@@ -124,17 +124,18 @@ body {
     width: 100%;
     max-width: 220px;
     padding: 6px 10px;
-    border: 1px solid #000000;
+    border: none;
+    border-bottom: 1px solid #000000;
     font-size: 13px;
     font-family: Arial, sans-serif;
-    background: white;
+    background: transparent;
     color: #000000;
 }
 
 .receipt-details input[type="text"]:focus,
 .receipt-details input[type="date"]:focus {
-    outline: 2px solid #000000;
-    outline-offset: -1px;
+    outline: none;
+    border-bottom: 2px solid #000000;
 }
 
 .receipt-title {
@@ -148,48 +149,58 @@ body {
 
 /* Patient Details */
 .patient-details {
-    border: 1px solid #000000;
-    padding: 15px;
-    margin-bottom: 20px;
+    border: none;
+    padding: 0;
+    margin-bottom: 15px;
 }
 
-.form-group {
-    margin-bottom: 12px;
+.patient-details .form-group {
+    display: inline-block;
+    margin-bottom: 8px;
+    margin-right: 15px;
+    vertical-align: top;
 }
 
-.form-group label {
+.patient-details .form-group label {
     font-weight: bold;
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
     color: #000000;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
+    min-width: auto;
 }
 
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 6px 10px;
-    border: 1px solid #000000;
-    font-size: 13px;
+.patient-details .form-group input,
+.patient-details .form-group select {
+    width: auto;
+    min-width: 140px;
+    padding: 3px 6px;
+    border: none;
+    border-bottom: 1px solid #000000;
+    font-size: 12px;
     font-family: Arial, sans-serif;
-    background: white;
+    background: transparent;
     color: #000000;
+    display: block;
 }
 
-.form-group input:focus,
-.form-group select:focus {
-    outline: 2px solid #000000;
-    outline-offset: -1px;
-}
-
-.form-row {
-    display: flex;
+.patient-details .form-row {
+    display: inline-flex;
     gap: 10px;
+    align-items: flex-start;
+    vertical-align: top;
 }
 
-.form-row .form-group {
-    flex: 1;
+.patient-details .form-row .form-group {
+    margin-bottom: 0;
+    margin-right: 0;
+}
+
+.patient-details .form-group:last-child {
+    display: block;
+    clear: both;
+    margin-top: 5px;
 }
 
 /* Items Table */
@@ -275,8 +286,8 @@ body {
 
 /* Totals Section */
 .totals-section {
-    border: 1px solid #000000;
-    padding: 15px;
+    border: none;
+    padding: 15px 0;
     margin-bottom: 20px;
 }
 
@@ -365,8 +376,8 @@ body {
 /* Payment Section */
 .payment-section {
     margin-bottom: 20px;
-    border: 1px solid #000000;
-    padding: 15px;
+    border: none;
+    padding: 0;
 }
 
 .payment-section label:first-child {
@@ -571,10 +582,13 @@ body {
         border: 1px solid #000000 !important;
     }
 
-    #itemsTable td input,
-    #itemsTable td select {
-        border: none !important;
-        background: transparent !important;
+    #itemsTable th:last-child,
+    #itemsTable td:last-child {
+        display: none !important;
+    }
+
+    .remove-btn {
+        display: none !important;
     }
 
     .totals-row.discount-row {

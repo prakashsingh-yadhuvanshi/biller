@@ -39,6 +39,12 @@ document.addEventListener('DOMContentLoaded', function() {
         discountPercentInput.disabled = true;
         discountRow.classList.remove('show-in-print');
     }
+    
+    // Add auto-capitalize functionality to specific fields
+    setupAutoCapitalization();
+    
+    // Add phone number validation
+    setupPhoneValidation();
 });
 
 // Switch clinic
@@ -70,7 +76,7 @@ function addItemRow() {
     
     row.innerHTML = `
         <td>${newRowNum}</td>
-        <td><input type="text" placeholder="Medicine/Service name"></td>
+        <td><input type="text" placeholder="Medicine/Service name" class="medicine-name"></td>
         <td><input type="text" placeholder="Batch/Expiry"></td>
         <td>
             <select class="item-type" onchange="calculateRow(this)">
@@ -83,6 +89,12 @@ function addItemRow() {
         <td><span class="cost">₹0.00</span></td>
         <td class="screen-only"><button type="button" class="remove-btn" onclick="removeRow(this)">×</button></td>
     `;
+    
+    // Add auto-capitalization to the medicine name input
+    const medicineInput = row.querySelector('.medicine-name');
+    medicineInput.addEventListener('blur', function() {
+        this.value = capitalizeWords(this.value);
+    });
     
     tbody.appendChild(row);
 }
@@ -222,5 +234,47 @@ function resetForm() {
         
         // Reset totals
         calculateTotals();
+    }
+}
+
+// Auto-capitalize first letter of each word in specific fields
+function setupAutoCapitalization() {
+    const fieldsToCapitalize = [
+        'specialistName',
+        'patientName',
+        'patientAddress'
+    ];
+    
+    fieldsToCapitalize.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.addEventListener('blur', function() {
+                this.value = capitalizeWords(this.value);
+            });
+        }
+    });
+}
+
+function capitalizeWords(str) {
+    if (!str) return str;
+    return str.toLowerCase().replace(/\b\w/g, function(char) {
+        return char.toUpperCase();
+    });
+}
+
+// Phone number validation
+function setupPhoneValidation() {
+    const contactField = document.getElementById('patientContact');
+    if (contactField) {
+        contactField.addEventListener('blur', function() {
+            const phoneValue = this.value.replace(/\D/g, ''); // Remove non-digits
+            if (phoneValue.length !== 10) {
+                alert('Phone number must be of 10 digits, please recheck');
+                this.value = '';
+                this.focus();
+            } else {
+                this.value = phoneValue;
+            }
+        });
     }
 }
