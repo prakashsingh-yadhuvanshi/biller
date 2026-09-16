@@ -53,7 +53,7 @@ body {
 }
 
 .clinic-selector label {
-    font-weight: bold;
+    font-weight: 600;
     margin-right: 10px;
     color: white;
 }
@@ -242,7 +242,7 @@ body {
 
 .form-row {
     display: flex;
-    gap: 15px;
+    gap: 12px;
 }
 
 .form-row .form-group {
