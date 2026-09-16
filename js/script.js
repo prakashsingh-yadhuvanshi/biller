@@ -136,6 +136,11 @@ function calculateTotals() {
     
     const subtotal = medicinesSubtotal + consultationSubtotal;
     
+    // Update individual totals display
+    document.getElementById('medicinesTotal').textContent = `₹${medicinesSubtotal.toFixed(2)}`;
+    document.getElementById('consultationTotal').textContent = `₹${consultationSubtotal.toFixed(2)}`;
+    document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+    
     const discountToggle = document.getElementById('discountToggle');
     const discountPercentInput = document.getElementById('discountPercent');
     
@@ -150,8 +155,6 @@ function calculateTotals() {
     }
     
     const grandTotal = subtotal - discountAmount;
-    
-    document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
     
     if (discountToggle && discountToggle.checked) {
         document.getElementById('discountAmount').textContent = `- ₹${discountAmount.toFixed(2)}`;
