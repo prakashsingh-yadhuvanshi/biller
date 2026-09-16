@@ -72,6 +72,12 @@ function addItemRow() {
         <td>${rowCount}</td>
         <td><input type="text" placeholder="Medicine/Service name"></td>
         <td><input type="text" placeholder="Batch/Expiry"></td>
+        <td>
+            <select class="item-type" onchange="calculateRow(this)">
+                <option value="medicine">Medicine</option>
+                <option value="consultation">Consultation</option>
+            </select>
+        </td>
         <td><input type="number" class="rate" value="0" min="0" onchange="calculateRow(this)" onkeyup="calculateRow(this)"></td>
         <td><input type="number" class="qty" value="1" min="1" onchange="calculateRow(this)" onkeyup="calculateRow(this)"></td>
         <td><span class="cost">₹0.00</span></td>
@@ -111,15 +117,25 @@ function calculateRow(input) {
     calculateTotals();
 }
 
-// Calculate totals
+// Calculate totals with separate logic for medicines and consultation
 function calculateTotals() {
-    const costs = document.querySelectorAll('.cost');
-    let subtotal = 0;
-
-    costs.forEach(cost => {
-        subtotal += parseFloat(cost.dataset.value) || 0;
+    const rows = document.querySelectorAll('#itemsBody tr');
+    let medicinesSubtotal = 0;
+    let consultationSubtotal = 0;
+    
+    rows.forEach(row => {
+        const itemType = row.querySelector('.item-type').value;
+        const cost = parseFloat(row.querySelector('.cost').dataset.value) || 0;
+        
+        if (itemType === 'medicine') {
+            medicinesSubtotal += cost;
+        } else if (itemType === 'consultation') {
+            consultationSubtotal += cost;
+        }
     });
-
+    
+    const subtotal = medicinesSubtotal + consultationSubtotal;
+    
     const discountToggle = document.getElementById('discountToggle');
     const discountPercentInput = document.getElementById('discountPercent');
     
@@ -129,11 +145,12 @@ function calculateTotals() {
     
     if (discountToggle && discountToggle.checked) {
         discountPercent = parseFloat(discountPercentInput.value) || 0;
-        discountAmount = subtotal * (discountPercent / 100);
+        // Discount applies only to medicines, not consultation
+        discountAmount = medicinesSubtotal * (discountPercent / 100);
     }
-
+    
     const grandTotal = subtotal - discountAmount;
-
+    
     document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
     
     if (discountToggle && discountToggle.checked) {
@@ -141,7 +158,7 @@ function calculateTotals() {
     } else {
         document.getElementById('discountAmount').textContent = '';
     }
-
+    
     document.getElementById('grandTotal').textContent = `₹${grandTotal.toFixed(2)}`;
 }
 
